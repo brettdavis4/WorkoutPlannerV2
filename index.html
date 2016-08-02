@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Six Week Workout Planner</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/overwrite.css">
+
+</head>
+<body role="document">
+    <div class="container theme-showcase" role="main">
+
+
+        <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" href="#home">Workout Planner</a></li>
+            <li><a data-toggle="tab" href="#exercises">Select Your Exercises</a></li>
+            <li><a data-toggle="tab" href="#workout">Build Your Workout</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <h3>About the Planner</h3>
+                <p>The Workout Planner is based off of the <a href="pdf/smart-start-bro-kit-insert-online.pdf" target="_blank">Les Mills SMART START</a> program.</p>
+                <p>Originally, the <a href="pdf/smart-start-planner.pdf" target="_blank">workout form</a> was in pdf form.  This is an online version of the form and it follows the similar format and suggestions of the SMART START program. </p>
+            </div>
+            <div id="exercises" class="tab-pane fade">
+                <h3>Select Your Exercises</h3>
+                <p>Please select or enter the fitness activities you will be doing.</p>
+
+                <form id="frmexercises">
+
+                    <h4>Cardio</h4>
+                    <div id="cardiodiv"></div>
+                    Add your own cardio exercise(s): <input id="tbcardio" type="text"/><br/>
+                    Please separate exercies by using a ",".
+
+                    <h4>Strength</h4>
+                    <div id="strengthdiv"></div>
+                    Add your own strength exercise(s): <input id="tbstength" type="text"/><br/>
+                    Please separate exercies by using a ",".
+
+                    <h4>Core/Stretching</h4>
+                    <div id="corediv"></div>
+                    Add your own core exercise(s): <input id="tbcore" type="text"/><br/>
+                    Please separate exercies by using a ",".<br/>
+
+                    <h4>HIIT</h4>
+                    <div id="hiitdiv"></div>
+                    Add your own core exercise(s): <input id="tbhiit" type="text"/><br/>
+                    Please separate exercies by using a ",".<br/>
+                    <button id="exbut" class=".btn-default">Save Exercises</button>
+
+                </form>
+                
+                <!-- Modal -->
+                <div id="modalexercise" class="modal fade" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="exampleModalLabel">Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="exerciseconfim"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div id="workout" class="tab-pane fade">
+                <h3>Workout Planner</h3>
+                <div id="noexercises" class="alert alert-danger">You do not have any exercises entered.  Please click the Select Your Exercises tab and enter your exercises.</div>
+                <div id="workoutplanner">
+                <form id="frmworkout">
+                    <input type="hidden" id="hcardio"/>
+                    <input type="hidden" id="hstrength"/>
+                    <input type="hidden" id="hcore"/>
+                    <input type="hidden" id="hhiit"/>
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span>Name:</span>
+                                </span>
+                                <input id="tbname" type="text" class="form-control"/>
+                            </div>
+                        </div>
+                    </div><br/>
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span>E-mail:</span>
+                                </span>
+                                <input id="tbemail" type="text" class="form-control"/>
+                            </div>
+                        </div>
+                    </div><br/>
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span>Workout Type:</span>
+                                </span>
+                                <select id="swtype" class="form-control">
+                                    <option value=""></option>
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <h4>Your Exercises:</h4>
+
+                    <div id="cardiolistdiv"></div><br/>
+                    <div id="strengthlistdiv"></div><br/>
+                    <div id="corelistdiv"></div><br/>
+                    <div id="hiitlistdiv"></div><br/>
+
+
+                    <br/>
+                    <p>Click on a day in the planner to add an exercise.</p>
+                    <table id="tblWorkout" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td class="tableheader">Week</td>
+                                <td class="tableheader">Sunday</td>
+                                <td class="tableheader">Monday</td>
+                                <td class="tableheader">Tuesday</td>
+                                <td class="tableheader">Wednesday</td>
+                                <td class="tableheader">Thursday</td>
+                                <td class="tableheader">Friday</td>
+                                <td class="tableheader">Saturday</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tableheader">1</td>
+                                <td id="0-0"></td>
+                                <td id="0-1"></td>
+                                <td id="0-2"></td>
+                                <td id="0-3"></td>
+                                <td id="0-4"></td>
+                                <td id="0-5"></td>
+                                <td id="0-6"></td>
+                            </tr>
+                            <tr>
+                                <td class="tableheader">2</td>
+                                <td id="1-0"></td>
+                                <td id="1-1"></td>
+                                <td id="1-2"></td>
+                                <td id="1-3"></td>
+                                <td id="1-4"></td>
+                                <td id="1-5"></td>
+                                <td id="1-6"></td>
+                            </tr>
+                            <tr>
+                                <td class="tableheader">3</td>
+                                <td id="2-0"></td>
+                                <td id="2-1"></td>
+                                <td id="2-2"></td>
+                                <td id="2-3"></td>
+                                <td id="2-4"></td>
+                                <td id="2-5"></td>
+                                <td id="2-6"></td>
+                            </tr>
+                            <tr>
+                                <td class="tableheader">4</td>
+                                <td id="3-0"></td>
+                                <td id="3-1"></td>
+                                <td id="3-2"></td>
+                                <td id="3-3"></td>
+                                <td id="3-4"></td>
+                                <td id="3-5"></td>
+                                <td id="3-6"></td>
+                            </tr>
+                            <tr>
+                                <td class="tableheader">5</td>
+                                <td id="4-0"></td>
+                                <td id="4-1"></td>
+                                <td id="4-2"></td>
+                                <td id="4-3"></td>
+                                <td id="4-4"></td>
+                                <td id="4-5"></td>
+                                <td id="4-6"></td>
+                            </tr>
+                            <tr>
+                                <td class="tableheader">6</td>
+                                <td id="5-0"></td>
+                                <td id="5-1"></td>
+                                <td id="5-2"></td>
+                                <td id="5-3"></td>
+                                <td id="5-4"></td>
+                                <td id="5-5"></td>
+                                <td id="5-6"></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <button id="workoutbtn" class=".btn-default">Verify Your Workout</button>
+                    <button id="deletebtn" class=".btn-default">Delete Workout and Exercises</button>
+                </form>
+                </div>
+                <br/>
+                
+                <!-- Modal -->
+                <div id="modalworkoutconfirm" class="modal fade" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="exampleModalLabel">Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="workoutconfim"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal -->
+                <div id="modalworkout" class="modal fade" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="exampleModalLabel">Add an exercise</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <input type="hidden" id="htd"/>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">Exercise Type:</label>
+                                        <select id="etype" class="form-control">
+                                            <option value=""></option>
+                                            <option value="Cardio">Cardio</option>
+                                            <option value="Strength">Strength</option>
+                                            <option value="Core">Core</option>
+                                            <option value="Hiit">Hiit</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="control-label">Exercise:</label>
+                                        <select id="exercise" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="saveex" >Save Exercise</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+
+                
+
+            </div>
+
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/workoutapp.js"></script>
+
+</body>
+</html>

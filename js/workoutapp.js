@@ -6,81 +6,11 @@ var planner = (function () {
         appCoreFlex = ["CxWorx", "BodyBalance", "BodyVive 3.1"],
         appHiit = ["Les Mills Grit Cardio", "Les Mills Grit Plyo"],
         appExLimit = 4,
-        util,
         model,
         view,
-        controller;
+        controller,
+        util;
         
-    
-    /* ======= Utility functions ======= */
-    util = {
-        //Populate checkbox values
-        popCheckBox: function (ediv, earray, ecb) {
-            var div = document.getElementById(ediv),
-                i;
-
-            for (i = 0; i < earray.length; i = i + 1) {
-                var checkbox = document.createElement('input'),
-                    label = document.createElement('label'),
-                    cbdiv = document.createElement('div');
-                
-                checkbox.type = 'checkbox';
-                checkbox.id = ecb;
-                checkbox.name = ecb;
-                checkbox.value = earray[i];
-                checkbox.text = earray[i];
-
-                label.htmlFor = ecb;
-                label.appendChild(document.createTextNode(earray[i]));
-
-                cbdiv.appendChild(checkbox);
-                cbdiv.appendChild(label);
-                div.appendChild(cbdiv);
-            }
-        },
-        
-        //Get selected checkbox values
-        cbValues: function (cbname) {
-            var values = '',
-                cb = document.getElementsByName(cbname),
-                i;
-
-            for (i = 0; i < cb.length; i = i + 1) {
-                if (cb[i].checked) {
-                    values += ',' + cb[i].value;
-                }
-            }
-            
-            if (values) {
-                values = values.substring(1);
-            }
-
-            return values;
-        },
-        
-        generatelist: function (list1, list2) {
-            var values = '';
-            if (list1 !== null && list2 !== null) {
-                if (list1 !== '') {
-                    if (list2 !== '') {
-                        values = list1 + ',' + list2;
-                    } else {
-                        values = list1;
-                    }
-                } else {
-                    values = list2;
-                }
-            } else {
-                values = '';
-            }
-            return values;
-        },
-        
-        replaceAll: function (str, find, replace) {
-            return str.replace(new RegExp(find, 'g'), replace);
-        }
-    };
-    
     /* ======= Model ======= */
     model = {
         workout: [
@@ -93,10 +23,6 @@ var planner = (function () {
                 exstrength: '',
                 excore: '',
                 exhiit: '',
-                excardiotb: '',
-                exstrengthtb: '',
-                excoretb: '',
-                exhiittb: '',
                 validworkout: false,
                 hasexercises: false
             }
@@ -144,10 +70,6 @@ var planner = (function () {
                 hiitlistdiv = document.getElementById('hiitlistdiv'),
                 noexercises = document.getElementById('noexercises'),
                 workoutplanner = document.getElementById('workoutplanner'),
-                hcardio = document.getElementById('hcardio'),
-                hstrength = document.getElementById('hstrength'),
-                hcore = document.getElementById('hcore'),
-                hhiit = document.getElementById('hhiit'),
                 
                 tbcardio = util.replaceAll(document.getElementById('tbcardio').value, ', ', ','),
                 tbstrength = util.replaceAll(document.getElementById('tbstength').value, ', ', ','),
@@ -180,13 +102,9 @@ var planner = (function () {
                 exerciseconfim.innerHTML = errorlist;
             } else {
                 model.workout.excardio = cbcardio;
-                model.workout.excardiotb = tbcardio;
                 model.workout.exstrength = cbstrength;
-                model.workout.exstrengthtb = tbstrength;
                 model.workout.excore = cbcore;
-                model.workout.excoretb = tbcore;
                 model.workout.exhiit = cbhiit;
-                model.workout.exhiittb = tbhiit;
                 
                 cardioexs = util.generatelist(cbcardio, tbcardio);
                 strengthexs = util.generatelist(cbstrength, tbstrength);
@@ -194,16 +112,12 @@ var planner = (function () {
                 hiitexs = util.generatelist(cbhiit, tbhiit);
 
                 cardiolistdiv.innerHTML = 'Cardio Activities: ' + util.replaceAll(cardioexs, ',', ', ');
-                hcardio.value =  cardioexs;
 
                 strengthlistdiv.innerHTML = 'Strength Activities: ' + util.replaceAll(strengthexs, ',', ', ');
-                hstrength.value = strengthexs;
 
                 corelistdiv.innerHTML = 'Core Activities: ' + util.replaceAll(coreexs, ',', ', ');
-                hcore.value = coreexs;
 
                 hiitlistdiv.innerHTML = 'Hiit Activities: ' + util.replaceAll(hiitexs, ',', ', ');
-                hhiit.value = hiitexs;
                 
                 noexercises.style.display = 'none';
                 workoutplanner.style.display = 'inline';
@@ -219,39 +133,38 @@ var planner = (function () {
         },
         
         tblclick: function () {
-            var tblworkout = document.getElementById('tblWorkout'),
-                week,
-                htd,
-                td,
-                count;
-
+            var tblworkout = document.getElementById("tblWorkout");
+            
             tblworkout.addEventListener('click', function (e) {
                 if (e.target.tagName !== 'TD') {
                     return;
                 }
-                var cell = e.target,
-                    cells = [].slice.call(cell.parentNode.children),
-                    column = cells.indexOf(cell),
+                
+                //console.log('table clicked...');
+                
+                var cell = e.target;
+                var cells = [].slice.call(cell.parentNode.children);
+                var column = cells.indexOf(cell);
 
-                    rows = [].slice.call(cell.parentNode.parentNode.children),
-                    row = rows.indexOf(cell.parentNode),
-                    cval;
+                var rows = [].slice.call(cell.parentNode.parentNode.children);
+                var row = rows.indexOf(cell.parentNode);
 
+                //console.log('cell - ' + cell + ' cells - ' + cells + ' column - ' + column + ' rows - ' + rows + ' row - ' + row);
                 //a slight hack to get rid of the th row
                 if (rows.length > 1) {
                     if (column !== 0) {
-                        week = row;
-                        cval = column - 1;
-                        
-                        var htd = document.getElementById("htd"),
-                            td = document.getElementById(htd.value),
-                            count = td.getElementsByTagName('div').length;
+                        var week = row;
+                        var cval = column - 1;
 
-
+                        var htd = document.getElementById("htd");
                         htd.value = week + "-" + cval;
-                        //display modal
-                        //limit to 4 items in day
-                        if (count <= 6) {
+
+                        var td = document.getElementById(htd.value);
+                        var count = td.getElementsByTagName('div').length;
+
+                        //console.log('rows - ' + rows + ' week - ' + week + ' htd - ' + htd + ' td - ' + td + ' count - ' + count);
+                                        
+                        if (count <= appExLimit) {
                             $('#modalworkout').modal('show');
                         } else {
                             window.alert('You can only have up to 4 exercises in a day.');
@@ -278,13 +191,13 @@ var planner = (function () {
         
                 if (etype.value !== '') {
                     if (etype.value === 'Cardio') {
-                        exerciselist = document.getElementById('hcardio').value;
+                        exerciselist = model.workout.excardio;
                     } else if (etype.value === 'Strength') {
-                        exerciselist = document.getElementById('hstrength').value;
+                        exerciselist = model.workout.exstrength;
                     } else if (etype.value === 'Core') {
-                        exerciselist = document.getElementById('hcore').value;
+                        exerciselist = model.workout.excore;
                     } else if (etype.value === 'Hiit') {
-                        exerciselist = document.getElementById('hhiit').value;
+                        exerciselist = model.workout.exhiit;
                     }
 
                     var exercisearray = exerciselist.split(',');
@@ -432,6 +345,12 @@ var planner = (function () {
         
         deletewoclick: function () {
             
+        },
+        
+        saveWorkout: function () {
+            var key = "Workout",
+                item = JSON.stringify(model.workout);
+            localStorage.setItem(key, item);
         },
         
         verifyWorkout: function (workout, wtype) {
@@ -594,6 +513,75 @@ var planner = (function () {
                 //console.log(err);
             }
 
+        }
+    };
+    
+    /* ======= Utility functions ======= */
+    util = {
+        //Populate checkbox values
+        popCheckBox: function (ediv, earray, ecb) {
+            var div = document.getElementById(ediv),
+                i;
+
+            for (i = 0; i < earray.length; i = i + 1) {
+                var checkbox = document.createElement('input'),
+                    label = document.createElement('label'),
+                    cbdiv = document.createElement('div');
+                
+                checkbox.type = 'checkbox';
+                checkbox.id = ecb;
+                checkbox.name = ecb;
+                checkbox.value = earray[i];
+                checkbox.text = earray[i];
+
+                label.htmlFor = ecb;
+                label.appendChild(document.createTextNode(earray[i]));
+
+                cbdiv.appendChild(checkbox);
+                cbdiv.appendChild(label);
+                div.appendChild(cbdiv);
+            }
+        },
+        
+        //Get selected checkbox values
+        cbValues: function (cbname) {
+            var values = '',
+                cb = document.getElementsByName(cbname),
+                i;
+
+            for (i = 0; i < cb.length; i = i + 1) {
+                if (cb[i].checked) {
+                    values += ',' + cb[i].value;
+                }
+            }
+            
+            if (values) {
+                values = values.substring(1);
+            }
+
+            return values;
+        },
+        
+        generatelist: function (list1, list2) {
+            var values = '';
+            if (list1 !== null && list2 !== null) {
+                if (list1 !== '') {
+                    if (list2 !== '') {
+                        values = list1 + ',' + list2;
+                    } else {
+                        values = list1;
+                    }
+                } else {
+                    values = list2;
+                }
+            } else {
+                values = '';
+            }
+            return values;
+        },
+        
+        replaceAll: function (str, find, replace) {
+            return str.replace(new RegExp(find, 'g'), replace);
         }
     };
 

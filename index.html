@@ -79,7 +79,11 @@
                 <div id="noexercises" class="alert alert-danger">You do not have any exercises entered.  Please click the Select Your Exercises tab and enter your exercises.</div>
                 <div id="workoutplanner">
                 <form id="frmworkout">
-
+                    <input type="hidden" id="hcardio"/>
+                    <input type="hidden" id="hstrength"/>
+                    <input type="hidden" id="hcore"/>
+                    <input type="hidden" id="hhiit"/>
+                    
                     <div class="row">
                         <div class="col-xs-4">
                             <div class="input-group">
@@ -209,7 +213,7 @@
                     
                     <br/>
                     <h4>Has your workout been verified?:</h4>
-                    <br/><div id="dverified"></div>
+                    <div id="dverified"></div><br/>
                     
                     <button id="workoutbtn" class=".btn-default">Verify Your Workout</button>
                     <button id="deletebtn" class=".btn-default">Delete Workout and Exercises</button>
